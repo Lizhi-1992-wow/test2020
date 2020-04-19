@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jg.boot.dao.UserDao">
+	<select id="login" resultMap="CommonMapper.UserMap">
+		select id as u_primary_id,u_id,u_name,u_pwd,is_used,is_admin 
+		from test_user where u_id = #{u_id} and u_pwd = #{u_pwd}
+		<if test="is_admin == 1">
+			 and is_admin = #{is_admin}
+		</if>
+	</select>
+	
+	<insert id="register" parameterType="User">
+		insert into test_user(u_id, u_name, u_pwd) values(#{u_id}, #{u_name}, #{u_pwd})
+	</insert>
+</mapper>

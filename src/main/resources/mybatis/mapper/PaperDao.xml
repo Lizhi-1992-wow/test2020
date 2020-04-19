@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jg.boot.dao.PaperDao">
+	
+	<insert id="addPaper" parameterType="Paper">
+		insert into paper(u_id,s_id,p_name,start_time,end_time,all_score,mark)
+		values(#{user.id},#{state.id},#{p_name},#{start_time},#{end_time},#{all_score},#{mark})
+	</insert>
+	<select id="getPaperId" resultType="int">
+		select max(id) from paper
+	</select>
+	<insert id="addPaperQuestions" parameterType="PaperQuestions">
+		insert into paper_questions(p_id, q_id, selected)
+		values(#{p_id}, #{q_id}, #{selected})
+	</insert>
+	<update id="calcPaperScore" parameterType="int">
+		update paper SET all_score = (select sum(score) from questions q 
+		INNER JOIN paper_questions pq on pq.q_id = q.id 
+		where selected = answer and p_id = #{p_id}) where id = #{p_id};
+	</update>
+	
+	<!-- 查看当前用的历史试卷 -->
+	<select id="getPapers" parameterType="int" resultMap="CommonMapper.PaperMap">
+		select p.id,p.u_id,p.s_id,p_name,start_time,end_time,all_score,mark 
+		from paper p inner join test_user u on p.u_id = u.id 
+		inner join state s on p.s_id = s.id 
+		where p.u_id = #{u_id}
+	</select>
+</mapper>

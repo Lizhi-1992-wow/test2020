@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jg.boot.dao.QuestionDao">
+	<resultMap type="State" id="StateMap">
+		<id property="id" column="s_id" />
+		<result property="s_code" column="s_code" />
+		<result property="s_name" column="s_name" />
+	</resultMap>
+	<resultMap type="Question" id="QuestionMap">
+		<id property="id" column="id" />
+		<result property="q_name" column="q_name" />
+		<result property="score" column="score" />
+		<result property="A" column="A" />
+		<result property="B" column="B" />
+		<result property="C" column="C" />
+		<result property="D" column="D" />
+		<result property="mark" column="mark" />
+		<association property="state" javaType="State" resultMap="StateMap" />
+	</resultMap>
+	<select id="getQuestionsByRandom" parameterType="Question" resultMap="QuestionMap">
+		select q.id,q_name,s_id,score,A,B,C,D,mark, s_code,s_name 
+		from questions q inner join state s 
+		on q.s_id = s.id
+		where s_id = #{state.id} and q_level = #{q_level}
+	</select>
+</mapper>

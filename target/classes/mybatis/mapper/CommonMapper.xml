@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommonMapper">
+	<!-- 用户映射 -->
+	<resultMap type="User" id="UserMap">
+		<id property="id" column="u_primary_id" />
+		<result property="u_id" column="u_id" />
+		<result property="u_name" column="u_name" />
+		<result property="u_pwd" column="u_pwd" />
+		<result property="is_used" column="is_used" />
+		<result property="is_admin" column="is_admin" />
+	</resultMap>
+	
+	<!-- 阶段表映射  -->
+	<resultMap type="State" id="StateMap">
+		<id property="id" column="s_id" />
+		<result property="s_code" column="s_code" />
+		<result property="s_name" column="s_name" />
+	</resultMap>
+	
+	<!-- 试卷试题映射 -->
+	<resultMap type="PaperQuestions" id="PaperQuestionsMap">
+	</resultMap>
+	
+	<!-- 试卷映射 -->
+	<resultMap type="Paper" id="PaperMap">
+		<id property="id" column="id" />
+		<result property="p_name" column="p_name" />
+		<result property="start_time" column="start_time" />
+		<result property="end_time" column="end_time" />
+		<result property="all_score" column="all_score" />
+		<result property="mark" column="mark" />
+		<association property="user" javaType="User" resultMap="UserMap" />
+		<association property="state" javaType="State" resultMap="StateMap" />
+		<collection property="paper_question" ofType="PaperQuestions" resultMap="PaperQuestionsMap" />
+	</resultMap>
+</mapper>
